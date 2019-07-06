@@ -1,0 +1,41 @@
+<html>
+<body>
+    <link rel="stylesheet" type="text/css" href="./content_scripts/animate-extension.css">
+    <style>
+        html {
+            --animate-theme-background: rgba(218,112,214,0.6);
+            --animate-theme-light: thistle;
+            --animate-theme-medium: plum;
+            --animate-theme-normal: orchid;
+            --animate-theme-dark: mediumorchid;
+        }
+        .icon {
+            --size: 48px;
+            width: var(--size);
+            height: var(--size);
+            margin: 20px auto;
+            border: none;
+            text-align: center;
+            color: black;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            font-size: calc(var(--size)*2/3);
+            font-variant: small-caps;
+            background: linear-gradient(
+                to right, 
+                var(--animate-theme-light) 0%,
+                var(--animate-theme-normal) 100%
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+    <div class="icon" style="--size: 16px;">A</div>
+    <div class="icon" style="--size: 32px;">A</div>
+    <div class="icon" style="--size: 48px;">A</div>
+    <div class="icon" style="--size: 64px;">A</div>
+    <div class="icon" style="--size: 96px;">A</div>
+    <div class="icon" style="--size: 128px;">A</div>
+</body>
+</html>

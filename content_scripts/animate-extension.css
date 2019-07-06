@@ -1,0 +1,29 @@
+@charset "UTF-8";
+html {
+    --animate-theme-background: rgba(218,112,214,0.6);
+    --animate-theme-light: thistle;
+    --animate-theme-medium: plum;
+    --animate-theme-normal: orchid;
+    --animate-theme-dark: mediumorchid;
+}
+.animate-selection{
+    outline: 1px dashed var(--animate-theme-normal);
+    background-color: var(--animate-theme-background) !important
+}
+#animate-sidebar {
+    all: unset;
+    width: 300px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    height: calc(100vh - 40px);
+    background-color: rgba(255,255,255,0.8);
+    border-radius: 8px;
+    box-shadow: 2px 2px 8px 2px rgba(0,0,0,0.5);
+    display: inline-block;
+    z-index: 2147483647;
+    overflow: auto;
+    text-align: center;
+    color: black;
+    font-size: 10pt;
+}

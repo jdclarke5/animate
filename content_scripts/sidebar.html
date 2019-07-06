@@ -1,0 +1,596 @@
+
+<style>
+
+  #content {
+    all: unset;
+    color: black;
+    font-size: 10pt;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
+    font: 10pt "Roboto", Arial, Helvetica, sans-serif;
+    text-align: center;
+    width: 90%;
+    padding: 5%;
+    display: inline-block;
+  }
+
+  .h1 {
+    font-weight: bold;
+    font-size: 18pt;
+    font-variant: small-caps;
+    color: var(--animate-theme-normal);
+    background: linear-gradient(
+      to right, 
+      var(--animate-theme-light) 0%,
+      var(--animate-theme-normal) 50%,
+      var(--animate-theme-light) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .h2 {
+    font-weight: bold;
+    font-size: 11pt;
+    font-variant: small-caps;
+    padding: 4px;
+  }
+
+  .h3 {
+    font-weight: bold;
+    font-variant: small-caps;
+    padding: 2px;
+  }
+
+  .text {
+    padding: 2px;
+  }
+
+  .tabs-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-variant: small-caps;
+  }
+
+  .tab {
+    flex-grow: 1;
+    cursor: pointer;
+    background-color: var(--animate-theme-light);
+    border-radius: 5px 5px 0 0;
+  }
+
+  .tab[selected] {
+    background-color: var(--animate-theme-normal);
+  }
+
+  .tab-content {
+    display: none;
+    border: 1px solid var(--animate-theme-normal);
+    border-radius: 0px 0px 5px 5px;
+    padding: 10px;
+    margin-bottom: 2px;
+  }
+
+  .tab-content[selected] {
+    display: inline-block;
+  }
+
+  .input {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 2px;
+  }
+
+  .input-label {
+    width: 40%;
+    font-weight: bold;
+    text-align: right;
+    padding-right: 5px;
+  }
+
+  .input-label::after {
+    content: ":";
+  }
+
+  .input-value {
+    width: 60%;
+  }
+
+  .ripple {
+    background-position: center;
+    transition: background 0.5s;
+  }
+
+  .ripple:hover {
+    background: var(--animate-theme-medium) radial-gradient(circle, transparent 1%, var(--animate-theme-medium) 1%) center/15000%;
+  }
+
+  .ripple:active {
+    background-color: var(--animate-theme-light);
+    background-size: 100%;
+    transition: background 0s;
+  }
+
+  button, input, select {
+    font-family: inherit;
+    font-size: 100%;
+    width: 100%;
+  }
+
+  button {
+    font-variant: small-caps;
+    background-color: var(--animate-theme-normal);
+    border: none;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    border-radius: 2px;
+    cursor: pointer;
+  }
+
+  #animate {
+    font-weight: bold;
+    padding: 8px;
+    margin-top: 4px;
+  }
+
+  input, select {
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box; 
+    box-sizing: border-box;
+  }
+
+  textarea {
+    height: 8em;
+    width: 100%;
+    resize: none;
+  }
+
+  a {
+    color: black;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+</style>
+
+<div id="content">
+
+  <div class="h1">
+    Animate!
+  </div>
+
+  <div class="text">
+    Choose your selector/animation/options and click animate!
+    You can add multiple animations (the order matters),
+    undo, and reset. Have fun!
+  </div>
+
+  <div class="h2">
+    Selector
+  </div>
+  <div class="tabs-container">
+    <!-- tabs -->
+    <div class="tabs">
+      <div class="tab ripple" selected>element</div>
+      <div class="tab ripple">predefined</div>
+      <div class="tab ripple">custom</div>
+    </div>
+    <!-- element -->
+    <div class="tab-content" tab="element" selected>
+      <div class="text">
+        Select a specific element...
+      </div>
+      <div id="select-text" class="text"></div>
+      <button id="select" class="ripple">Select</button>
+    </div>
+    <!-- predefined -->
+    <div class="tab-content" tab="predefined">
+      <div class="text">
+        Choose a CSS selector and (optionally) pseudo-class...
+      </div>
+      <div class="input">
+        <div class="input-label">selector</div>
+        <div class="input-value">
+          <select id="selector-selector" value="img">
+            <option value="img">img</option>
+            <option value="p">p</option>
+            <option value="a">a</option>
+            <option value="table">table</option>
+            <option value="td">td</option>
+            <option value="tr">tr</option>
+            <option value="div">div</option>
+          </select>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">psuedo-class</div>
+        <div class="input-value">
+          <select id="selector-pseudoclass" value="">
+            <option value=""></option>
+            <option value=":hover">:hover</option>
+            <option value=":focus">:focus</option>
+            <option value=":empty">:empty</option>
+            <option value=":first-child">:first-child</option>
+            <option value=":last-child">:last-child</option>
+            <option value=":link">:link</option>
+            <option value=":visited">:visited</option>
+            <option value="[custom]">[custom]</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!-- custom -->
+    <div class="tab-content" tab="custom">
+      <div class="text">
+        Specify a CSS selector...
+      </div>
+        <input type="text" id="selector-custom" placeholder="body"></input>
+    </div>
+  </div>
+
+  <div class="h2">
+    Animation
+  </div>
+  <div class="tabs-container">
+    <!-- tabs -->
+    <div class="tabs">
+      <div class="tab ripple" selected>animate.css</div>
+      <div class="tab ripple">construct</div>
+      <div class="tab ripple">custom</div>
+    </div>
+    <!-- animate.css -->
+    <div class="tab-content" tab="animate.css" selected>
+      <div class="text">
+        Select an animation from <a href="https://daneden.github.io/animate.css/"><code>animate.css</code></a>...
+      </div>
+      <select id="animation-animate-css" value="bounce">
+        <optgroup label="Attention Seekers">
+          <option value="bounce">bounce</option>
+          <option value="flash">flash</option>
+          <option value="pulse">pulse</option>
+          <option value="rubberBand">rubberBand</option>
+          <option value="shake">shake</option>
+          <option value="swing">swing</option>
+          <option value="tada">tada</option>
+          <option value="wobble">wobble</option>
+          <option value="jello">jello</option>
+          <option value="heartBeat">heartBeat</option>
+        </optgroup>
+        <optgroup label="Bouncing Entrances">
+          <option value="bounceIn">bounceIn</option>
+          <option value="bounceInDown">bounceInDown</option>
+          <option value="bounceInLeft">bounceInLeft</option>
+          <option value="bounceInRight">bounceInRight</option>
+          <option value="bounceInUp">bounceInUp</option>
+        </optgroup>
+        <optgroup label="Bouncing Exits">
+          <option value="bounceOut">bounceOut</option>
+          <option value="bounceOutDown">bounceOutDown</option>
+          <option value="bounceOutLeft">bounceOutLeft</option>
+          <option value="bounceOutRight">bounceOutRight</option>
+          <option value="bounceOutUp">bounceOutUp</option>
+        </optgroup>
+        <optgroup label="Fading Entrances">
+          <option value="fadeIn">fadeIn</option>
+          <option value="fadeInDown">fadeInDown</option>
+          <option value="fadeInDownBig">fadeInDownBig</option>
+          <option value="fadeInLeft">fadeInLeft</option>
+          <option value="fadeInLeftBig">fadeInLeftBig</option>
+          <option value="fadeInRight">fadeInRight</option>
+          <option value="fadeInRightBig">fadeInRightBig</option>
+          <option value="fadeInUp">fadeInUp</option>
+          <option value="fadeInUpBig">fadeInUpBig</option>
+        </optgroup>
+        <optgroup label="Fading Exits">
+          <option value="fadeOut">fadeOut</option>
+          <option value="fadeOutDown">fadeOutDown</option>
+          <option value="fadeOutDownBig">fadeOutDownBig</option>
+          <option value="fadeOutLeft">fadeOutLeft</option>
+          <option value="fadeOutLeftBig">fadeOutLeftBig</option>
+          <option value="fadeOutRight">fadeOutRight</option>
+          <option value="fadeOutRightBig">fadeOutRightBig</option>
+          <option value="fadeOutUp">fadeOutUp</option>
+          <option value="fadeOutUpBig">fadeOutUpBig</option>
+        </optgroup>
+        <optgroup label="Flippers">
+          <option value="flip">flip</option>
+          <option value="flipInX">flipInX</option>
+          <option value="flipInY">flipInY</option>
+          <option value="flipOutX">flipOutX</option>
+          <option value="flipOutY">flipOutY</option>
+        </optgroup>
+        <optgroup label="Lightspeed">
+          <option value="lightSpeedIn">lightSpeedIn</option>
+          <option value="lightSpeedOut">lightSpeedOut</option>
+        </optgroup>
+        <optgroup label="Rotating Entrances">
+          <option value="rotateIn">rotateIn</option>
+          <option value="rotateInDownLeft">rotateInDownLeft</option>
+          <option value="rotateInDownRight">rotateInDownRight</option>
+          <option value="rotateInUpLeft">rotateInUpLeft</option>
+          <option value="rotateInUpRight">rotateInUpRight</option>
+        </optgroup>
+        <optgroup label="Rotating Exits">
+          <option value="rotateOut">rotateOut</option>
+          <option value="rotateOutDownLeft">rotateOutDownLeft</option>
+          <option value="rotateOutDownRight">rotateOutDownRight</option>
+          <option value="rotateOutUpLeft">rotateOutUpLeft</option>
+          <option value="rotateOutUpRight">rotateOutUpRight</option>
+        </optgroup>
+        <optgroup label="Sliding Entrances">
+          <option value="slideInUp">slideInUp</option>
+          <option value="slideInDown">slideInDown</option>
+          <option value="slideInLeft">slideInLeft</option>
+          <option value="slideInRight">slideInRight</option>
+        </optgroup>
+        <optgroup label="Sliding Exits">
+          <option value="slideOutUp">slideOutUp</option>
+          <option value="slideOutDown">slideOutDown</option>
+          <option value="slideOutLeft">slideOutLeft</option>
+          <option value="slideOutRight">slideOutRight</option>
+        </optgroup>
+        <optgroup label="Zoom Entrances">
+          <option value="zoomIn">zoomIn</option>
+          <option value="zoomInDown">zoomInDown</option>
+          <option value="zoomInLeft">zoomInLeft</option>
+          <option value="zoomInRight">zoomInRight</option>
+          <option value="zoomInUp">zoomInUp</option>
+        </optgroup>
+        <optgroup label="Zoom Exits">
+          <option value="zoomOut">zoomOut</option>
+          <option value="zoomOutDown">zoomOutDown</option>
+          <option value="zoomOutLeft">zoomOutLeft</option>
+          <option value="zoomOutRight">zoomOutRight</option>
+          <option value="zoomOutUp">zoomOutUp</option>
+        </optgroup>
+        <optgroup label="Specials">
+          <option value="hinge">hinge</option>
+          <option value="jackInTheBox">jackInTheBox</option>
+          <option value="rollIn">rollIn</option>
+          <option value="rollOut">rollOut</option>
+        </optgroup>
+      </select>
+    </div>
+    <!-- construct -->
+    <div class="tab-content" tab="construct">
+      <div class="text">
+        Construct a to-state from the following 
+        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties">CSS properties</a>.
+        It is your responsibility to ensure they are valid CSS!
+      </div>
+      <div class="h3">
+        transform
+      </div>
+      <div class="input">
+        <div class="input-label">translate</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-translate" placeholder="12px, 50%"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">scale</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-scale" placeholder="2, 0.5"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">rotate</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-rotate" placeholder="180deg"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">skew</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-skew" placeholder="30deg, 20deg"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">transform-origin</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-transform-origin" placeholder="top left"></input>
+        </div>
+      </div>
+      <div class="h3">
+        size
+      </div>
+      <div class="input">
+        <div class="input-label">width</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-width" placeholder="50%"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">height</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-height" placeholder="100px"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">margin</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-margin" placeholder="5% auto"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">padding</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-padding" placeholder="2px 1em 0 auto"></input>
+        </div>
+      </div>
+      <div class="h3">
+        color/border
+      </div>
+      <div class="input">
+        <div class="input-label">background</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-background" placeholder="green"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">opacity</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-opacity" placeholder="0.5"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">border</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-border" placeholder="4px double black"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">outline</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-outline" placeholder="thick dashed"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">box-shadow</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-box-shadow" placeholder="inset 2px 2px red"></input>
+        </div>
+      </div>
+      <div class="h3">
+        font
+      </div>
+      <div class="input">
+        <div class="input-label">color</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-color" placeholder="gold"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">font</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-font" placeholder="italic 10pt serif"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">letter-spacing</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-letter-spacing" placeholder="1px"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">text-shadow</div>
+        <div class="input-value">
+          <input type="text" id="animation-construct-text-shadow" placeholder="1px 1px 2px pink"></input>
+        </div>
+      </div>
+    </div>
+    <!-- custom -->
+    <div class="tab-content" tab="custom">
+      <div class="text">
+        Specify a custom @keyframes animation...
+      </div>
+      <textarea id="animation-custom" placeholder="@keyframes example {...}"></textarea>
+    </div>
+  </div>
+
+  <div class="h2">
+    Options
+  </div>
+  <div class="tabs-container">
+    <!-- tabs -->
+    <div class="tabs">
+      <div class="tab ripple" selected>simple</div>
+      <div class="tab ripple">advanced</div>
+    </div>
+    <!-- simple -->
+    <div class="tab-content" tab="simple" selected>
+      <div class="text">
+        Select from the available options...
+      </div>
+      <div class="input">
+        <div class="input-label">duration</div>
+        <div class="input-value">
+          <input type="text" id="options-duration" placeholder="1s" value="1s"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">timing-function</div>
+        <div class="input-value">
+          <select id="options-timing-function" value="ease">
+            <option value="ease">ease</option>
+            <option value="linear">linear</option>
+            <option value="ease-in">ease-in</option>
+            <option value="ease-out">ease-out</option>
+            <option value="ease-in-out">ease-in-out</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!-- advanced -->
+    <div class="tab-content" tab="advanced">
+      <div class="text">
+        Specify the animation properties...
+      </div>
+      <div class="input">
+        <div class="input-label">duration</div>
+        <div class="input-value">
+          <input type="text" id="options-advanced-duration" placeholder="1s" value="1s"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">delay</div>
+        <div class="input-value">
+          <input type="text" id="options-advanced-delay" placeholder="1s"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">iteration-count</div>
+        <div class="input-value">
+          <input type="text" id="options-advanced-iteration-count" placeholder="infinite" value="infinite"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">direction</div>
+        <div class="input-value">
+          <select id="options-advanced-direction" value="alternate">
+            <option value="normal">normal</option>
+            <option value="reverse">reverse</option>
+            <option value="alternate">alternate</option>
+            <option value="alternate-reverse">alternate-reverse</option>
+          </select>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">timing-function</div>
+        <div class="input-value">
+          <input type="text" id="options-advanced-timing-function" placeholder="cubic-bezier(0.1, 0.7, 1.0, 0.1)"></input>
+        </div>
+      </div>
+      <div class="input">
+        <div class="input-label">fill-mode</div>
+        <div class="input-value">
+          <select id="options-advanced-fill-mode" value="none">
+            <option value="none">none</option>
+            <option value="forwards">forwards</option>
+            <option value="backwards">backwards</option>
+            <option value="both">both</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="input">
+    <button id="animate" class="ripple">Animate!</button>
+  </div>
+
+  <div class="input">
+    <button id="undo" class="ripple">undo</button>
+  </div>
+
+  <div class="input">
+    <button id="reset" class="ripple">reset</button>
+  </div>
+
+</div>
