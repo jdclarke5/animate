@@ -169,12 +169,27 @@
     sheet.innerHTML = '';
   }
 
+  function handleCopyError() {
+    var sidebar = document.querySelector('#animate-sidebar');
+    sidebar.shadowRoot.querySelector('#copy-error').style.display = "block";
+  }
+
   function handleCopyPrevious() {
-    navigator.clipboard.writeText(sheetHistory[sheetHistory.length-1]);
+    if (!navigator.clipboard) {
+      handleCopyError();
+      return;
+    }
+    navigator.clipboard.writeText(sheetHistory[sheetHistory.length-1])
+      .catch(handleCopyError);
   }
 
   function handleCopyAll() {
-    navigator.clipboard.writeText(sheetHistory.join('\n\n'));
+    if (!navigator.clipboard) {
+      handleCopyError();
+      return;
+    }
+    navigator.clipboard.writeText(sheetHistory.join('\n\n'))
+      .catch(handleCopyError);
   }
 
   function handleSelect() {

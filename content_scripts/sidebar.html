@@ -142,6 +142,10 @@
     margin-top: 8px;
   }
 
+  #copy-error {
+    display: none;
+  }
+
   input, select {
     -ms-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -603,6 +607,10 @@
   
   <div class="input">
     <button id="copy-all" class="ripple">copy all to clipboard</button>
+  </div>
+
+  <div id="copy-error" class="text">
+    Copy unavailable... are you on HTTPS?
   </div>
 
 </div>
