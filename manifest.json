@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Animate!",
   "short_name": "Animate!",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Animate the web!",
   "author": "Jackson Clarke",
   "homepage_url": "https://github.com/jdclarke5/animate",
