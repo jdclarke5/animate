@@ -183,11 +183,11 @@
       // Prevent navigation
       e.preventDefault();
       e.stopPropagation();
-      // Cannot animate elements without display block
-      // var displayStyle = getComputedStyle(e.target).display;
-      // if (!displayStyle || !displayStyle.includes('block')) {
-      //   return;
-      // }
+      // Cannot animate inline elements
+      var displayStyle = getComputedStyle(e.target).display;
+      if (displayStyle == 'inline') {
+        return;
+      }
       // Attach a random string as class
       selectedElementClass = `animate-${Math.round(Math.random()*1000000)}`;
       e.target.classList.add(selectedElementClass);
@@ -214,11 +214,11 @@
       // Add mouse handlers
       e.target.addEventListener('click', handleMouseClick);
       e.target.addEventListener('mouseout', handleMouseOut);
-      // Cannot animate elements without display block
-      // var displayStyle = getComputedStyle(e.target).display;
-      // if (!displayStyle || !displayStyle.includes('block')) {
-      //   return;
-      // }
+      // Cannot animate inline elements
+      var displayStyle = getComputedStyle(e.target).display;
+      if (displayStyle == 'inline') {
+        return;
+      }
       // Add highlight class
       e.target.classList.add('animate-selection');
     }
