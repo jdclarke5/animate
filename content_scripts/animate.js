@@ -55,7 +55,7 @@
         // Generate random name
         animationName = `animate-constructed-${Math.round(Math.random()*1000000)}`;
         // Create the 'to' @keyframes animation CSS property
-        var to = '\n';
+        var to = '';
         // Transform property
         var transformProperties = [
           'translate',
@@ -63,15 +63,15 @@
           'rotate',
           'skew',
         ];
-        var transformTo = '';
+        var transformTo = [];
         transformProperties.forEach( (t) => {
           var value = shadow.querySelector(`#animation-construct-${t}`).value;
           if (`${value}` !== '') {
-            transformTo += `${t}(${value}) `;
+            transformTo.push(`${t}(${value})`);
           }
         });
-        if (transformTo) {
-          to += `transform: ${transformTo};\n`;
+        if (transformTo.length > 0) {
+          to += `    transform: ${transformTo.join(' ')};\n`;
         }
         // Straight properties
         var properties = [
@@ -93,15 +93,17 @@
         properties.forEach( (p) => {
           var value = shadow.querySelector(`#animation-construct-${p}`).value;
           if (`${value}` !== '') {
-            to += `${p}: ${value};\n`
+            to += `    ${p}: ${value};\n`
           }
         });
         // Construct keyframes
-        detail.keyframes = `
-          @keyframes ${animationName} {
-            to {${to}}
-          }
-        `;
+        detail.keyframes = (
+          `@keyframes ${animationName} {\n` +
+          `  to {\n` +
+          `${to}` +
+          `  }\n` +
+          `}`
+        );
         break;
       case 'custom':
         var custom = shadow.querySelector('#animation-custom').value;
@@ -116,43 +118,42 @@
     // options
     switch (selected[2].innerText) {
       case 'simple':
-        detail.options = `
-          animation-name: ${animationName};
-          animation-duration: ${shadow.querySelector('#options-duration').value};
-          animation-delay: 0s;
-          animation-iteration-count: infinite;
-          animation-direction: alternate;
-          animation-timing-function: ${shadow.querySelector('#options-timing-function').value};
-          animation-fill-mode: none;
-        `;
+        detail.options = (
+          `animation-name: ${animationName};\n  ` +
+          `animation-duration: ${shadow.querySelector('#options-duration').value};\n  ` +
+          `animation-delay: 0s;\n  ` +
+          `animation-iteration-count: infinite;\n  ` +
+          `animation-direction: alternate;\n  ` +
+          `animation-timing-function: ${shadow.querySelector('#options-timing-function').value};\n  ` +
+          `animation-fill-mode: none;`
+        );
         break;
       case 'advanced':
-        detail.options = `
-          animation-name: ${animationName};
-          animation-duration: ${shadow.querySelector('#options-advanced-duration').value || '1s'};
-          animation-delay: ${shadow.querySelector('#options-advanced-delay').value || '0s'};
-          animation-iteration-count: ${shadow.querySelector('#options-advanced-iteration-count').value || 'infinite'};
-          animation-direction: ${shadow.querySelector('#options-advanced-direction').value || 'alternate'};
-          animation-timing-function: ${shadow.querySelector('#options-advanced-timing-function').value || 'ease'};
-          animation-fill-mode: ${shadow.querySelector('#options-advanced-fill-mode').value || 'none'};
-        `;
+        detail.options = (
+          `animation-name: ${animationName};\n  ` +
+          `animation-duration: ${shadow.querySelector('#options-advanced-duration').value || '1s'};\n  ` +
+          `animation-delay: ${shadow.querySelector('#options-advanced-delay').value || '0s'};\n  ` +
+          `animation-iteration-count: ${shadow.querySelector('#options-advanced-iteration-count').value || 'infinite'};\n  ` +
+          `animation-direction: ${shadow.querySelector('#options-advanced-direction').value || 'alternate'};\n  ` +
+          `animation-timing-function: ${shadow.querySelector('#options-advanced-timing-function').value || 'ease'};\n  ` +
+          `animation-fill-mode: ${shadow.querySelector('#options-advanced-fill-mode').value || 'none'};`
+        );
     }
     return detail;
   }
 
   function handleAnimate() {
     var detail = _constructAnimationDetail();
-    // Contruct animation CSS ensuring html (containing the sidebar)
-    // never gets animated
-    var css = `
-      ${detail.keyframes}
-      ${detail.selector} {
-        ${detail.options}
-      }
-      html { animation: none; }
-    `;
-    sheet.innerHTML += css;
-    sheetHistory.push(sheet.innerHTML);
+    // Contruct animation CSS 
+    var css = (
+      `${detail.keyframes}\n\n` +
+      `${detail.selector} {\n` +
+      `  ${detail.options}\n` +
+      `}`
+    );
+    sheetHistory.push(css);
+    // Ensure <html> (containing the sidebar) never gets animated
+    sheet.innerHTML = sheetHistory.join('\n\n') + '\n\nhtml { animation: none; }';
   }
 
   function handleUndo() {
@@ -160,12 +161,20 @@
       return;
     }
     sheetHistory.pop();
-    sheet.innerHTML = sheetHistory[sheetHistory.length-1];
+    sheet.innerHTML = sheetHistory.join('\n\n') + '\n\nhtml { animation: none; }';
   }
 
   function handleReset() {
     sheetHistory = [''];
     sheet.innerHTML = '';
+  }
+
+  function handleCopyPrevious() {
+    navigator.clipboard.writeText(sheetHistory[sheetHistory.length-1]);
+  }
+
+  function handleCopyAll() {
+    navigator.clipboard.writeText(sheetHistory.join('\n\n'));
   }
 
   function handleSelect() {
@@ -263,6 +272,8 @@
         shadow.querySelector('#animate').addEventListener('click', handleAnimate);
         shadow.querySelector('#undo').addEventListener('click', handleUndo);
         shadow.querySelector('#reset').addEventListener('click', handleReset);
+        shadow.querySelector('#copy-previous').addEventListener('click', handleCopyPrevious);
+        shadow.querySelector('#copy-all').addEventListener('click', handleCopyAll);
         shadow.querySelector('#select').addEventListener('click', handleSelect);
         // We are done
         window.animateHasInit = true;

@@ -138,6 +138,10 @@
     margin-top: 4px;
   }
 
+  #copy-previous {
+    margin-top: 8px;
+  }
+
   input, select {
     -ms-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -168,7 +172,7 @@
   <div class="text">
     Choose your selector/animation/options and click animate!
     You can add multiple animations (the order matters),
-    undo, and reset. Have fun!
+    undo, reset, and copy the raw CSS to clipboard. Have fun!
   </div>
 
   <div class="h2">
@@ -591,6 +595,14 @@
 
   <div class="input">
     <button id="reset" class="ripple">reset</button>
+  </div>
+
+  <div class="input">
+    <button id="copy-previous" class="ripple">copy previous to clipboard</button>
+  </div>
+  
+  <div class="input">
+    <button id="copy-all" class="ripple">copy all to clipboard</button>
   </div>
 
 </div>
